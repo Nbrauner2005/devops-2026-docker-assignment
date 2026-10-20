@@ -15,3 +15,5 @@ docker run -d \
     -e POSTGRES_DB=chinook \
     -v devops-postgres-data:/var/lib/postgresql/data \
     postgres:17
+
+docker build --target seeder -t devops-assignment-seeder:1.0 . 
