@@ -38,4 +38,23 @@ docker run --rm \
     -e DATABASE_URL="postgres://devops:devops123@postgres-db:5432/chinook" \
     devops-assignment-seeder:1.0
 
-echo "Database seeding complete."   
+echo "Database seeding complete."  
+
+echo "Starting MCP Gateway..."
+
+docker run -d \
+    --name mcp-gateway \
+    --network devops-assignment-network \
+    --label com.nathan.assignment=devops-2026-docker \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v "${PWD}/mcp_config.yaml:/mcp_config.yaml:ro" \
+    -v "${PWD}/mcp_secret.env:/run/secrets/database-url:ro" \
+    docker/mcp-gateway:latest \
+    --transport=sse \
+    --secrets=/run/secrets/database-url \
+    --allow-unauthenticated \
+    --servers=cockroachdb \
+    --tools=execute_query \
+    --config=/mcp_config.yaml
+
+echo "MCP Gateway started."
