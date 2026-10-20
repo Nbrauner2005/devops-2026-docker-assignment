@@ -90,7 +90,7 @@ docker run --rm \
     -e DATABASE_DIALECT="PostgreSQL" \
     -e QUESTION="What are the top 3 albums by sales? Cast the total sales calculation to double precision so the results can be returned as JSON." \
     -e OPENAI_API_BASE_URL="https://ollama.com/v1" \
-    -e MODEL_NAME="gpt-oss:20b" \
+    -e OPENAI_MODEL_NAME="gpt-oss:20b" \
     devops-assignment-agent:1.0
 
 echo "AI Agent completed."
