@@ -8,3 +8,4 @@ __pycache__
 *.pyc
 CLAUDE.md
 .DS_S*
+/mcp_secret.env
