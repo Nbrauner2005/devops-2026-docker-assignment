@@ -16,7 +16,7 @@ docker run -d \
     -v devops-postgres-data:/var/lib/postgresql/data \
     postgres:17
 
-echo "Waiting for PostgreSQl..."
+echo "Waiting for PostgreSQL..."
 
 until docker exec postgres-db pg_isready -U devops -d chinook >/dev/null 2>&1
 do
@@ -25,4 +25,17 @@ done
 
 echo "PostgreSQL is ready."
 
-docker build --target seeder -t devops-assignment-seeder:1.0 . 
+docker build --target seeder -t devops-assignment-seeder:1.0 .
+
+echo "Starting database seeder..."
+
+docker run --rm \
+    --name db-seeder \
+    --network devops-assignment-network \
+    --label com.nathan.assignment=devops-2026-docker \
+    -v "${PWD}/Chinook.db:/app/Chinook.db:ro" \
+    -e SQLITE_FILE=/app/Chinook.db \
+    -e DATABASE_URL="postgres://devops:devops123@postgres-db:5432/chinook" \
+    devops-assignment-seeder:1.0
+
+echo "Database seeding complete."   
